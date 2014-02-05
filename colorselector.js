@@ -3,6 +3,9 @@
 	
 	var COLOR_SELECTOR_ID = 'color-selector';
 
+	(new Image()).src = 'hue.png';
+	(new Image()).src = 'color.png';
+
 	function hsv2rgb(h, s, v) {
 		var f = h / 60,
 			i = f ^ 0,
