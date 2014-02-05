@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Font Texture Generator</title>
-		<script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
 		<script src="colorselector.js"></script>
 		<style type="text/css">
 			p {
@@ -79,7 +79,7 @@
 			<select id="tex-height"><option value="128">128</option><option value="256" selected>256</option><option value="512">512</option><option value="1024">1024</option></select>
 		</p>
 		<p><label>フォント</label><input type="text" id="font" value="Quicksand" /><input type="button" id="load" value="load" /></p>
-		<p><label>テキスト</label><input type="text" id="text" value="0123456789" /><input type="button" id="opt" value="重複文字の削除" /></p>
+		<p><label>テキスト</label><input type="text" id="text" value="0123456789abcdefghijklmnopqrstu" /><input type="button" id="opt" value="重複文字の削除" /></p>
 		<p><label>フォントサイズ</label><input type="number" id="size" value="42" /></p>
 		<p><label>フォントスタイル</label><label>太字</label><input type="checkbox" id="bold" /><label>斜体</label><input type="checkbox" id="italic" /></p>
 		<p><label for="mono">等幅</label><input type="checkbox" id="mono" checked /><label for="ss">スーパーサンプリング</label><input type="checkbox" id="ss" checked /></p>
@@ -111,15 +111,15 @@
 					ctxc = character.getContext('2d'),
 					ctx = ctxa;
 				
-				var fontHeight = 42,
+				var fontHeight = 40,
 					fontWidth = 26,
 					fontFamily = 'Quicksand', //'Baumans',
-					text = '0123456789',
+					text = '0123456789abcdefghijklmnopqrstuvwxyz',
 					mono = true,
 					outline = true,
 					outlineOffsetX = 0,
 					outlineOffsetY = 0,
-					outlineWidth = 8.0,
+					outlineWidth = 2.0,
 					shadow = false,
 					shadowColor = '#000000',
 					shadowBlur = 3.0,
@@ -131,11 +131,13 @@
 					ss = true,
 					bold = false,
 					italic = false,
-					grad = false,
+					grad = true,
 					endColor = '#FF7700',
 					grid = false;
 				
 				var fontRects = [];
+				
+				setControl();
 				
 				function $(e) {
 					if(!$[e]) {
@@ -490,6 +492,28 @@
 					return v ? v === 'true' ? true : false : d;
 				}
 				
+				function setControl() {
+					$('tex-width').selectedIndex = canvas.width >> 8;
+					$('tex-height').selectedIndex = canvas.height >> 8;
+					$('font').value = fontFamily;
+					$('text').value = text;
+					$('size').value = fontHeight;
+					$('text-color').value = textColor;
+					$('mono').checked = mono;
+					$('outline').checked = outline;
+					$('outline-color').value = outlineColor;
+					$('outline-width').value = outlineWidth;
+					$('outline-offset-x').value = outlineOffsetX;
+					$('outline-offset-y').value = outlineOffsetY;
+					$('shadow').checked = shadow;
+					$('shadow-color').value = shadowColor;
+					$('shadow-offset-y').value = shadowOffsetX;
+					$('shadow-offset-y').value = shadowOffsetY;
+					$('grad').checked = grad;
+					$('end-color').value = endColor;
+					$('ss').checked = ss;
+				}
+				
 				function loadSettings() {
 					if(localStorage) {
 						canvas.width = getFloat('width', 256);
@@ -513,26 +537,8 @@
 						grad = getBool('grad', false);
 						endColor = getString('end-color', '#000000');
 						ss = getBool('ss', false);
-						$('tex-width').selectedIndex = canvas.width >> 8;
-						$('tex-height').selectedIndex = canvas.height >> 8;
-						$('font').value = fontFamily;
-						$('text').value = text;
-						$('size').value = fontHeight;
-						$('text-color').value = textColor;
-						$('mono').checked = mono;
-						$('outline').checked = outline;
-						$('outline-color').value = outlineColor;
-						$('outline-width').value = outlineWidth;
-						$('outline-offset-x').value = outlineOffsetX;
-						$('outline-offset-y').value = outlineOffsetY;
-						$('shadow').checked = shadow;
-						$('shadow-color').value = shadowColor;
-						$('shadow-offset-y').value = shadowOffsetX;
-						$('shadow-offset-y').value = shadowOffsetY;
-						$('grad').checked = grad;
-						$('end-color').value = endColor;
-						$('ss').checked = ss;
 						
+						setControl();
 					}
 				}
 				
