@@ -34,20 +34,24 @@
         <h3>
 <a name="%E6%A6%82%E8%A6%81" class="anchor" href="#%E6%A6%82%E8%A6%81"><span class="octicon octicon-link"></span></a>概要</h3>
 
-<p>Webフォントを利用してフォントのテクスチャを生成するツールです。</p>
-
+<p>Webフォントを利用してフォントのテクスチャを生成するツールです。下記のリンクから使うことができます。</p>
+<p>主にゲームのスコアなどに装飾をした文字を出したい場合に使うことを想定しています。</p>
 <p><a href="generator.html">generator.html</a></p>
 
 <h3>
 <a name="%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB" class="anchor" href="#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB"><span class="octicon octicon-link"></span></a>サンプル</h3>
-
-<p><img src="screenshot/sample_0.png" alt="サンプルテクスチャ0"><img src="screenshot/sample_1.png" alt="サンプルテクスチャ1"></p>
+<p>このツールを使用して作成したフォント用のテクスチャのサンプルです。</p>
+<p><img src="screenshot/sample_0.png" alt="サンプルテクスチャ0"><img src="screenshot/sample_1.png" alt="サンプルテクスチャ1">
+		<img src="screenshot/sample_3.png" alt="サンプルテクスチャ2"><img src="screenshot/sample_4.png" alt="サンプルテクスチャ3"></p>
 
 <h3>
 <a name="%E4%BD%BF%E3%81%84%E6%96%B9" class="anchor" href="#%E4%BD%BF%E3%81%84%E6%96%B9"><span class="octicon octicon-link"></span></a>使い方</h3>
 
 <p><a href="http://www.google.com/fonts">Google Fonts</a>から好きなフォントを探してフォント名を入れて「load」ボタンを押すとフォントをロードします。</p>
-
+<p>各種の設定項目(フォントサイズ、アウトラインなど)を動かして好きな見た目になるように調節します。</p>
+		<h4>PNGファイルのダウンロード</h4>
+		  <p>「PNGダウンロード」をクリックするとPNGファイルがダウンロードできます。</p>
+		  
 		  <h4>設定の保存</h4>
 		  <p>「保存」ボタンを押すとブラウザに現在の設定を保存します。(Local Storageを使用)</p>
 		  
@@ -55,9 +59,10 @@
 <a name="unity%E3%81%AE%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88%E3%81%AB%E4%BD%BF%E3%81%86" class="anchor" href="#unity%E3%81%AE%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88%E3%81%AB%E4%BD%BF%E3%81%86"><span class="octicon octicon-link"></span></a>Unityのフォントに使う</h3>
 <ol>
 	<li>フォントのテクスチャを生成したらPNGファイルとfontsettingsファイルをダウンロードします。</li>
-	<li>Unityにそれぞれのファイルをコピーします。</li>
+	<li>Unityのプロジェクトにそれぞれのファイルをコピーします。</li>
 	<li>フォント用のマテリアルを作成します。</li>
-	<li>ヒエラルキーにGUI Textまたは3D Textを追加する。</li>
+	<li>マテリアルにフォントのテクスチャと<a href="https://gist.github.com/sapphire-al2o3/8875316">シェーダ</a>を設定します。</li>
+	<li>ヒエラルキーにGUI Textまたは3D Textを追加して、フォントを設定します。</li>
 </ol>
 <p><img src="screenshot/unity_scene.png" alt="Unityのシーン"></p>
 		</section>
