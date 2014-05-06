@@ -94,6 +94,7 @@
 		<p><label>シャドウオフセット</label><input type="number" id="shadow-offset-x" value="0" /><input type="number" id="shadow-offset-y" value="0" /></p>
 		<p><input type="button" value="設定保存" id="save-settings" /><input type="button" value="設定読込" id="load-settings" /><input type="button" value="PNG" id="png" /><input type="button" id="alpha" value="アルファ" /></p>
 		<p><label for="gird">グリッド表示</label><input type="checkbox" id="grid" /></p>
+		<p><label for="background">背景色</label><input type="checkbox" id="background"><input type="text" id="background-color" class="color" value="#000000" /></p>
 		<p>
 			<a id="download" download="font.png" href="#" target="_blank">PNGダウンロード</a>
 			<a id="fontsettings" download="font.fontsettings" href="#" target="_blank">fontsettingsダウンロード</a>
@@ -133,7 +134,9 @@
 					italic = false,
 					grad = true,
 					endColor = '#FF7700',
-					grid = false;
+					grid = false,
+					background = false,
+					backgroundColor = '#000000';
 				
 				var fontRects = [];
 				
@@ -252,6 +255,15 @@
 					render();
 				}, false);
 				
+				$('background-color').addEventListener('mousedown', function(e) {
+					ColorSelector.show(function(v) {
+						backgroundColor = v;
+						$('background-color').value = v;
+						render();
+					}, backgroundColor, e.target);
+					e.stopPropagation();
+				});
+				
 				createNumberControll($('shadow-blur'), function(v) {
 					shadowBlur = v;
 					render();
@@ -331,6 +343,11 @@
 				
 				$('grid').addEventListener('change', function(e) {
 					grid = e.target.checked;
+					render();
+				});
+				
+				$('background').addEventListener('change', function(e) {
+					background = e.target.checked;
 					render();
 				});
 				
@@ -569,8 +586,13 @@
 					if(ss) {
 						ctx.scale(2.0, 2.0);
 					}
-					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					
+					if(background) {
+						ctx.fillStyle = backgroundColor;
+						ctx.fillRect(0, 0, canvas.width, canvas.height);
+					} else {
+						ctx.clearRect(0, 0, canvas.width, canvas.height);
+					}
 					var w = 0;
 					
 					if(outline) {
