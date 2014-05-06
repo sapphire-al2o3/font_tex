@@ -487,6 +487,7 @@
 						localStorage.setItem('outline-offset-x', outlineOffsetX);
 						localStorage.setItem('outline-offset-y', outlineOffsetY);
 						localStorage.setItem('shadow', shadow);
+						localStorage.setItem('shadow-blur', shadowBlur);
 						localStorage.setItem('shadow-color', shadowColor);
 						localStorage.setItem('shadow-offset-x', shadowOffsetX);
 						localStorage.setItem('shadow-offset-y', shadowOffsetY);
@@ -523,6 +524,7 @@
 					$('outline-offset-x').value = outlineOffsetX;
 					$('outline-offset-y').value = outlineOffsetY;
 					$('shadow').checked = shadow;
+					$('shadow-blur').value = shadowBlur;
 					$('shadow-color').value = shadowColor;
 					$('shadow-offset-y').value = shadowOffsetX;
 					$('shadow-offset-y').value = shadowOffsetY;
@@ -548,6 +550,7 @@
 						outlineOffsetX = getFloat('outline-offset-x', 0);
 						outlineOffsetY = getFloat('outline-offset-y', 0);
 						shadow = getBool('shadow', false);
+						shadowBlur = getFloat('shadow-blur', '#000000');
 						shadowColor = getString('shadow-color', '#000000');
 						shadowOffsetX = getFloat('shadow-offset-x', 0);
 						shadowOffsetY = getFloat('shadow-offset-y', 0);
