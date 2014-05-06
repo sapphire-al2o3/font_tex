@@ -494,6 +494,7 @@
 						localStorage.setItem('grad', grad);
 						localStorage.setItem('end-color', endColor);
 						localStorage.setItem('ss', ss);
+						localStorage.setItem('background-color', backgroundColor);
 					}
 				}
 				
@@ -531,6 +532,7 @@
 					$('grad').checked = grad;
 					$('end-color').value = endColor;
 					$('ss').checked = ss;
+					$('background-color').value = backgroundColor;
 				}
 				
 				function loadSettings() {
@@ -557,6 +559,7 @@
 						grad = getBool('grad', false);
 						endColor = getString('end-color', '#000000');
 						ss = getBool('ss', false);
+						backgroundColor = getString('background-color', '#000000');
 						
 						setControl();
 					}
