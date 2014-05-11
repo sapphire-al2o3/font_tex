@@ -98,6 +98,7 @@
 		<p>
 			<a id="download" download="font.png" href="#" target="_blank">PNGダウンロード</a>
 			<a id="fontsettings" download="font.fontsettings" href="#" target="_blank">fontsettingsダウンロード</a>
+			<a id="fontjson" download="font.json" href="#" target="_blank">JSONダウンロード</a>
 		</p>
 		<p><textarea id="json"></textarea></p>
 		<script>
@@ -138,7 +139,8 @@
 					background = false,
 					backgroundColor = '#000000';
 				
-				var fontRects = [];
+				var fontRects = [],
+					fontJson = [];
 				
 				setControl();
 				
@@ -358,6 +360,13 @@
 				$('fontsettings').addEventListener('click', function(e) {
 					var text = generateFontSettings(fontRects),
 						blob = new Blob([text], {'type': 'text/plain'});
+					window.URL = window.URL || window.webkitURL;
+					e.target.href = window.URL.createObjectURL(blob);
+				});
+				
+				$('fontjson').addEventListener('click', function(e) {
+					var json = JSON.stringify(fontRects),
+						blob = new Blob([json], {'type': 'text/plain'});
 					window.URL = window.URL || window.webkitURL;
 					e.target.href = window.URL.createObjectURL(blob);
 				});
@@ -698,8 +707,7 @@
 							h: (fontHeight + w) / canvas.height
 						};
 						
-						if(grid)
-						{
+						if(grid) {
 							ctx.save();
 							ctx.fillStyle = (row & 1) ^ (col & 1) ? '#0F0' : '#F0F';
 							ctx.fillRect(offsetX - size.w / 2, offsetY, size.w, size.h);
