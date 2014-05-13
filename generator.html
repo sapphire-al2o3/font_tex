@@ -93,7 +93,7 @@
 		<p><label for="shadow-color">シャドウカラー</label><input type="text" id="shadow-color" value="#000000" class="color"></p>
 		<p><label>シャドウオフセット</label><input type="number" id="shadow-offset-x" value="0" /><input type="number" id="shadow-offset-y" value="0" /></p>
 		<p><input type="button" value="設定保存" id="save-settings" /><input type="button" value="設定読込" id="load-settings" /><input type="button" value="PNG" id="png" /><input type="button" id="alpha" value="アルファ" /></p>
-		<p><label for="gird">グリッド表示</label><input type="checkbox" id="grid" /></p>
+		<p><label for="gird">グリッド表示</label><input type="checkbox" id="grid" /><label for="baseline">ベースラインオフセット</label><input id="baseline" type="number" value="0" /></p>
 		<p><label for="background">背景色</label><input type="checkbox" id="background"><input type="text" id="background-color" class="color" value="#000000" /></p>
 		<p>
 			<a id="download" download="font.png" href="#" target="_blank">PNGダウンロード</a>
@@ -136,6 +136,7 @@
 					grad = true,
 					endColor = '#FF7700',
 					grid = false,
+					baselineOffset = 0,
 					background = false,
 					backgroundColor = '#000000';
 				
@@ -347,6 +348,11 @@
 					grid = e.target.checked;
 					render();
 				});
+				
+				createNumberControll($('baseline'), function(v) {
+					baselineOffset = v;
+					render();
+				}, 1, -20, 20);
 				
 				$('background').addEventListener('change', function(e) {
 					background = e.target.checked;
@@ -715,10 +721,10 @@
 						}
 						
 						if(outline) {
-							ctx.strokeText(c, offsetX + outlineOffsetX, offsetY + outlineOffsetY);
+							ctx.strokeText(c, offsetX + outlineOffsetX, offsetY + outlineOffsetY - baselineOffset);
 						}
 						
-						ctx.fillText(c, offsetX, offsetY);
+						ctx.fillText(c, offsetX, offsetY - baselineOffset);
 						
 						col++;
 						
