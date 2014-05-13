@@ -94,9 +94,11 @@
 		<p><label>シャドウオフセット</label><input type="number" id="shadow-offset-x" value="0" /><input type="number" id="shadow-offset-y" value="0" /></p>
 		<p><input type="button" value="設定保存" id="save-settings" /><input type="button" value="設定読込" id="load-settings" /><input type="button" value="PNG" id="png" /><input type="button" id="alpha" value="アルファ" /></p>
 		<p><label for="gird">グリッド表示</label><input type="checkbox" id="grid" /><label for="baseline">ベースラインオフセット</label><input id="baseline" type="number" value="0" /></p>
+		<p><label for="background">背景色</label><input type="checkbox" id="background"><input type="text" id="background-color" class="color" value="#000000" /></p>
 		<p>
 			<a id="download" download="font.png" href="#" target="_blank">PNGダウンロード</a>
 			<a id="fontsettings" download="font.fontsettings" href="#" target="_blank">fontsettingsダウンロード</a>
+			<a id="fontjson" download="font.json" href="#" target="_blank">JSONダウンロード</a>
 		</p>
 		<p><textarea id="json"></textarea></p>
 		<script>
@@ -134,9 +136,12 @@
 					grad = true,
 					endColor = '#FF7700',
 					grid = false,
-					baselineOffset = 0;
+					baselineOffset = 0,
+					background = false,
+					backgroundColor = '#000000';
 				
-				var fontRects = [];
+				var fontRects = [],
+					fontJson = [];
 				
 				setControl();
 				
@@ -253,6 +258,15 @@
 					render();
 				}, false);
 				
+				$('background-color').addEventListener('mousedown', function(e) {
+					ColorSelector.show(function(v) {
+						backgroundColor = v;
+						$('background-color').value = v;
+						render();
+					}, backgroundColor, e.target);
+					e.stopPropagation();
+				});
+				
 				createNumberControll($('shadow-blur'), function(v) {
 					shadowBlur = v;
 					render();
@@ -340,6 +354,11 @@
 					render();
 				}, 1, -20, 20);
 				
+				$('background').addEventListener('change', function(e) {
+					background = e.target.checked;
+					render();
+				});
+				
 				$('download').addEventListener('click', function(e) {
 					e.target.href = canvas.toDataURL();
 				});
@@ -347,6 +366,13 @@
 				$('fontsettings').addEventListener('click', function(e) {
 					var text = generateFontSettings(fontRects),
 						blob = new Blob([text], {'type': 'text/plain'});
+					window.URL = window.URL || window.webkitURL;
+					e.target.href = window.URL.createObjectURL(blob);
+				});
+				
+				$('fontjson').addEventListener('click', function(e) {
+					var json = JSON.stringify(fontRects),
+						blob = new Blob([json], {'type': 'text/plain'});
 					window.URL = window.URL || window.webkitURL;
 					e.target.href = window.URL.createObjectURL(blob);
 				});
@@ -476,12 +502,14 @@
 						localStorage.setItem('outline-offset-x', outlineOffsetX);
 						localStorage.setItem('outline-offset-y', outlineOffsetY);
 						localStorage.setItem('shadow', shadow);
+						localStorage.setItem('shadow-blur', shadowBlur);
 						localStorage.setItem('shadow-color', shadowColor);
 						localStorage.setItem('shadow-offset-x', shadowOffsetX);
 						localStorage.setItem('shadow-offset-y', shadowOffsetY);
 						localStorage.setItem('grad', grad);
 						localStorage.setItem('end-color', endColor);
 						localStorage.setItem('ss', ss);
+						localStorage.setItem('background-color', backgroundColor);
 					}
 				}
 				
@@ -512,12 +540,14 @@
 					$('outline-offset-x').value = outlineOffsetX;
 					$('outline-offset-y').value = outlineOffsetY;
 					$('shadow').checked = shadow;
+					$('shadow-blur').value = shadowBlur;
 					$('shadow-color').value = shadowColor;
 					$('shadow-offset-y').value = shadowOffsetX;
 					$('shadow-offset-y').value = shadowOffsetY;
 					$('grad').checked = grad;
 					$('end-color').value = endColor;
 					$('ss').checked = ss;
+					$('background-color').value = backgroundColor;
 				}
 				
 				function loadSettings() {
@@ -537,12 +567,14 @@
 						outlineOffsetX = getFloat('outline-offset-x', 0);
 						outlineOffsetY = getFloat('outline-offset-y', 0);
 						shadow = getBool('shadow', false);
-						shadowColor = getString('shadowColor', '#000000');
+						shadowBlur = getFloat('shadow-blur', '#000000');
+						shadowColor = getString('shadow-color', '#000000');
 						shadowOffsetX = getFloat('shadow-offset-x', 0);
 						shadowOffsetY = getFloat('shadow-offset-y', 0);
 						grad = getBool('grad', false);
 						endColor = getString('end-color', '#000000');
 						ss = getBool('ss', false);
+						backgroundColor = getString('background-color', '#000000');
 						
 						setControl();
 					}
@@ -575,8 +607,13 @@
 					if(ss) {
 						ctx.scale(2.0, 2.0);
 					}
-					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					
+					if(background) {
+						ctx.fillStyle = backgroundColor;
+						ctx.fillRect(0, 0, canvas.width, canvas.height);
+					} else {
+						ctx.clearRect(0, 0, canvas.width, canvas.height);
+					}
 					var w = 0;
 					
 					if(outline) {
@@ -676,8 +713,7 @@
 							h: (fontHeight + w) / canvas.height
 						};
 						
-						if(grid)
-						{
+						if(grid) {
 							ctx.save();
 							ctx.fillStyle = (row & 1) ^ (col & 1) ? '#0F0' : '#F0F';
 							ctx.fillRect(offsetX - size.w / 2, offsetY, size.w, size.h);
