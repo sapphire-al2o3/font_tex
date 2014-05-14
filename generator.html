@@ -371,7 +371,20 @@
 				});
 				
 				$('fontjson').addEventListener('click', function(e) {
-					var json = JSON.stringify(fontRects),
+					var ff = {};
+					for(var i = 0; i < fontRects.length; i++) {
+						var f = {};
+						f.u = fontRects[i][1];
+						f.v = fontRects[i][2];
+						f.w = fontRects[i][3];
+						f.h = fontRects[i][4];
+						f.vx = fontRects[i][5];
+						f.vy = fontRects[i][6];
+						f.vw = fontRects[i][7];
+						f.vh = -fontRects[i][8];
+						ff[fontRects[i][0]] = f;
+					}
+					var json = JSON.stringify(ff),
 						blob = new Blob([json], {'type': 'text/plain'});
 					window.URL = window.URL || window.webkitURL;
 					e.target.href = window.URL.createObjectURL(blob);
