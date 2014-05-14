@@ -79,7 +79,7 @@
 			<select id="tex-height"><option value="128">128</option><option value="256" selected>256</option><option value="512">512</option><option value="1024">1024</option></select>
 		</p>
 		<p><label>フォント</label><input type="text" id="font" value="Quicksand" /><input type="button" id="load" value="load" /></p>
-		<p><label>テキスト</label><input type="text" id="text" value="0123456789abcdefghijklmnopqrstu" /><input type="button" id="opt" value="重複文字の削除" /></p>
+		<p><label>テキスト</label><input type="text" id="text" value="0123456789abcdefghijklmnopqrstu" /><input type="button" id="opt" value="重複文字の削除" /><input type="button" id="text-0-9" value="0-9" /><input type="button" id="text-a-z" value="a-z" /></p>
 		<p><label>フォントサイズ</label><input type="number" id="size" value="42" /></p>
 		<p><label>フォントスタイル</label><label>太字</label><input type="checkbox" id="bold" /><label>斜体</label><input type="checkbox" id="italic" /></p>
 		<p><label for="mono">等幅</label><input type="checkbox" id="mono" checked /><label for="ss">スーパーサンプリング</label><input type="checkbox" id="ss" checked /></p>
@@ -333,6 +333,26 @@
 					$('text').value = text;
 					render();
 				}, false);
+				
+				$('text-a-z').addEventListener('click', function(e) {
+					var t = [];
+					for(var i = 'a'.charCodeAt(); i <= 'z'.charCodeAt(); i++) {
+						t.push(String.fromCharCode(i));
+					}
+					text = t.join('');
+					$('text').value = text;
+					render();
+				});
+				
+				$('text-0-9').addEventListener('click', function(e) {
+					var t = [];
+					for(var i = '0'.charCodeAt(); i <= '9'.charCodeAt(); i++) {
+						t.push(String.fromCharCode(i));
+					}
+					text = t.join('');
+					$('text').value = text;
+					render();
+				});
 				
 				$('png').addEventListener('click', function(e) {
 					var img = canvas.toDataURL();
