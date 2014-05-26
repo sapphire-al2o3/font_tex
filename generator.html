@@ -94,6 +94,7 @@
 		<p><label>シャドウオフセット</label><input type="number" id="shadow-offset-x" value="0" /><input type="number" id="shadow-offset-y" value="0" /></p>
 		<p><input type="button" value="設定保存" id="save-settings" /><input type="button" value="設定読込" id="load-settings" /><input type="button" value="PNG" id="png" /><input type="button" id="alpha" value="アルファ" /></p>
 		<p><label for="gird">グリッド表示</label><input type="checkbox" id="grid" /><label for="baseline">ベースラインオフセット</label><input id="baseline" type="number" value="0" /></p>
+		<p><label>マージン</label><input id="margin-top" type="number" value="0" /></p>
 		<p><label for="background">背景色</label><input type="checkbox" id="background"><input type="text" id="background-color" class="color" value="#000000" /></p>
 		<p>
 			<a id="download" download="font.png" href="#" target="_blank">PNGダウンロード</a>
@@ -137,6 +138,7 @@
 					endColor = '#FF7700',
 					grid = false,
 					baselineOffset = 0,
+					marginTop = 0,
 					background = false,
 					backgroundColor = '#000000';
 				
@@ -373,6 +375,11 @@
 					baselineOffset = v;
 					render();
 				}, 1, -20, 20);
+				
+				createNumberControll($('margin-top'), function(v) {
+					marginTop = v;
+					render();
+				}, 1, 0, 20);
 				
 				$('background').addEventListener('change', function(e) {
 					background = e.target.checked;
@@ -708,6 +715,8 @@
 					
 					fontRects.length = 0;
 					
+					var fontH = fontWidth + marginTop;
+					
 					for(var i = 0; i < text.length; i++) {
 						var c = text[i],
 							m = ctx.measureText(c);
@@ -719,11 +728,11 @@
 						}
 						
 						if(offsetX + fontWidth * 0.5 + w > canvas.width) {
-							offsetY -= fontHeight + w + outlineOffsetY;
+							offsetY -= fontH + w + outlineOffsetY;
 							offsetX = w * 0.5 + fontWidth * 0.5;
 							
 							if(grad) {
-								var gradColor = ctx.createLinearGradient(0, offsetY - fontHeight, 0, offsetY);
+								var gradColor = ctx.createLinearGradient(0, offsetY - fontH, 0, offsetY);
 								gradColor.addColorStop(0, textColor);
 								gradColor.addColorStop(1, endColor);
 								ctx.fillStyle = gradColor;
@@ -736,14 +745,14 @@
 							x: 0,
 							y: 0,
 							w: fontWidth + w,
-							h: -(fontHeight + w)
+							h: -(fontH + w)
 						};
 						
 						var uv = {
 							x: (offsetX - w * 0.5 - fontWidth * 0.5) / canvas.width,
 							y: (canvas.height - (offsetY + w * 0.5)) / canvas.height,
 							w: size.w / canvas.width,
-							h: (fontHeight + w) / canvas.height
+							h: (fontH + w) / canvas.height
 						};
 						
 						if(grid) {
