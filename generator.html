@@ -180,7 +180,7 @@
 				createNumberControll($('size'), function(v) {
 					fontHeight = v;
 					render();
-				}, 1, 1, 100);
+				}, 1, 1, 200);
 
 				$('load').addEventListener('click', function(e) {
 					fontFamily = $('font').value;
@@ -556,6 +556,7 @@
 						localStorage.setItem('end-color', endColor);
 						localStorage.setItem('ss', ss);
 						localStorage.setItem('background-color', backgroundColor);
+						localStorage.setItem('background', background);
 					}
 				}
 				
@@ -594,6 +595,7 @@
 					$('end-color').value = endColor;
 					$('ss').checked = ss;
 					$('background-color').value = backgroundColor;
+					$('background').value = background;
 				}
 				
 				function loadSettings() {
@@ -621,6 +623,7 @@
 						endColor = getString('end-color', '#000000');
 						ss = getBool('ss', false);
 						backgroundColor = getString('background-color', '#000000');
+						background = getBool('background', false);
 						
 						setControl();
 					}
